@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard – AlgaeFuel AI</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <div id="navbar"></div>
+
+  <main class="page">
+    <h1 class="section-title">AI-Driven Algal Biofuel Optimization</h1>
+    <p class="section-subtitle">
+      Real-time monitoring and optimization system for algae-based biofuel
+      production.
+    </p>
+
+    <div class="status-bar">
+      <span>✅ System is actively monitoring sensor data.</span>
+      <span id="last-update" style="margin-left:auto;color:#2a784e;font-size:0.85rem;">
+        Last update: —
+      </span>
+    </div>
+
+    <section class="grid-4">
+      <div class="card card-metric">
+        <div class="card-metric-label">pH Level</div>
+        <div class="card-metric-value" id="card-ph">7.50</div>
+        <div class="card-metric-sub">Real-time reading</div>
+      </div>
+
+      <div class="card card-metric">
+        <div class="card-metric-label">Temperature</div>
+        <div class="card-metric-value" id="card-temp">25.0°C</div>
+        <div class="card-metric-sub">Real-time reading</div>
+      </div>
+
+      <div class="card card-metric">
+        <div class="card-metric-label">Turbidity</div>
+        <div class="card-metric-value" id="card-turb">—</div>
+        <div class="card-metric-sub">Culture density indicator</div>
+      </div>
+
+      <div class="card card-metric">
+        <div class="card-metric-label">Growth Status</div>
+        <div class="card-metric-value" id="card-status">Optimal</div>
+        <div class="card-metric-sub">Based on ML prediction</div>
+      </div>
+    </section>
+
+    <section class="grid-2" style="margin-top:18px;">
+      <div class="chart-container">
+        <h3 style="margin-bottom:8px;">pH & Temperature Trends</h3>
+        <canvas id="trendChart" height="130"></canvas>
+      </div>
+
+      <div class="chart-container">
+        <h3 style="margin-bottom:8px;">Biomass Prediction Trend</h3>
+        <canvas id="biomassChart" height="130"></canvas>
+      </div>
+    </section>
+
+    <!-- FIXED QUICK ACTION BUTTONS -->
+    <section class="quick-actions">
+      <button class="quick-btn" onclick="location.href='manual-input.html'">
+        <div>
+          <div class="quick-btn-main">Get Prediction</div>
+          <div class="quick-btn-sub">Enter manual sensor values</div>
+        </div>
+        <span>➜</span>
+      </button>
+
+      <button class="quick-btn" onclick="location.href='algae-types.html'">
+        <div>
+          <div class="quick-btn-main">Algae Species</div>
+          <div class="quick-btn-sub">Learn about different strains</div>
+        </div>
+        <span>🌿</span>
+      </button>
+
+      <button class="quick-btn" onclick="location.href='yield-comparison.html'">
+        <div>
+          <div class="quick-btn-main">Yield Analysis</div>
+          <div class="quick-btn-sub">Compare current vs AI-optimized yield</div>
+        </div>
+        <span>📈</span>
+      </button>
+    </section>
+
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+  <script>
+    loadShell();
+  </script>
+</body>
+</html>
