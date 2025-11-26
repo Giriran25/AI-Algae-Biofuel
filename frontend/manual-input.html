@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manual Input – AlgaeFuel AI</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <main class="page">
+    <h1 class="section-title">Manual Data Input &amp; Prediction</h1>
+    <p class="section-subtitle">
+      Enter sensor values to get AI-powered biomass predictions.
+    </p>
+
+    <section class="grid-2">
+      <div class="card">
+        <h3 style="margin-bottom:12px;">Sensor Parameters</h3>
+
+        <form id="manualForm" class="form-grid">
+          <div class="form-group">
+            <label>pH Level</label>
+            <input type="number" step="0.01" id="phInput" placeholder="7.5" value="7.8" />
+          </div>
+          <div class="form-group">
+            <label>Temperature (°C)</label>
+            <input type="number" step="0.1" id="tempInput" placeholder="27" value="25" />
+          </div>
+          <div class="form-group">
+            <label>Turbidity (NTU)</label>
+            <input type="number" step="0.1" id="turbInput" placeholder="40" value="18" />
+          </div>
+          <div class="form-group">
+            <label>&nbsp;</label>
+            <button type="submit" class="btn-primary">Generate Prediction</button>
+          </div>
+        </form>
+
+        <div style="margin-top:18px;">
+          <h4 style="margin-bottom:8px;">Historical sample (last 8 readings)</h4>
+          <canvas id="manualTrend" height="120"></canvas>
+        </div>
+      </div>
+
+      <div class="card card-metric">
+        <div class="card-metric-label">Predicted Biomass Yield</div>
+        <div class="card-metric-value" id="manual-biomass">0.387</div>
+        <div class="card-metric-sub"> g/L (AFDW)</div>
+
+        <div style="margin-top:16px;">
+          <div style="font-weight:600;margin-bottom:6px;">Optimization Suggestions</div>
+          <ul id="manual-suggestions" style="font-size:0.95rem;color:var(--text-muted);"></ul>
+        </div>
+
+        <div style="margin-top:16px;">
+          <div style="font-weight:600;margin-bottom:6px;">Current vs Optimal</div>
+          <table class="table-soft">
+            <thead>
+              <tr><th>Parameter</th><th>Current</th><th>Optimal</th></tr>
+            </thead>
+            <tbody id="current-optimal">
+              <!-- filled by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/manual.js"></script>
+  <script>loadShell();</script>
+</body>
+</html>

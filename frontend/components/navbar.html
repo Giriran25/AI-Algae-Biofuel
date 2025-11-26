@@ -1,0 +1,52 @@
+<div class="nav-shell">
+  <header class="nav">
+    <div class="nav-left">
+      <div class="nav-logo">A</div>
+      <div class="nav-title">AlgaeFuel AI</div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="index.html" class="nav-link" data-page="dashboard">
+        <span class="icon">📊</span> Dashboard
+      </a>
+
+      <a href="manual-input.html" class="nav-link" data-page="manual">
+        <span class="icon">📝</span> Manual Input
+      </a>
+
+      <a href="algae-types.html" class="nav-link" data-page="algae">
+        <span class="icon">🌿</span> Algae Types
+      </a>
+
+      <a href="industry-usage.html" class="nav-link" data-page="industry">
+        <span class="icon">🏭</span> Industry
+      </a>
+
+      <a href="yield-comparison.html" class="nav-link" data-page="yield">
+        <span class="icon">📈</span> Yield Comparison
+      </a>
+    </nav>
+  </header>
+</div>
+
+<script>
+  (function () {
+    const file = location.pathname.split("/").pop();
+
+    const map = {
+      "index.html": "dashboard",
+      "manual-input.html": "manual",
+      "algae-types.html": "algae",
+      "industry-usage.html": "industry",
+      "yield-comparison.html": "yield",
+    };
+
+    const activePage = map[file] || "dashboard";
+
+    document.querySelectorAll(".nav-link").forEach((link) => {
+      if (link.dataset.page === activePage) {
+        link.classList.add("active");
+      }
+    });
+  })();
+</script>

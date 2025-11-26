@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Yield Comparison – AlgaeFuel AI</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <main class="page">
+    <h1 class="section-title">Yield Comparison Analysis</h1>
+    <p class="section-subtitle">
+      Compare current production with AI-optimized potential.
+    </p>
+
+    <section class="grid-3">
+      <div class="card card-metric">
+        <div class="card-metric-label">Current Average Yield</div>
+        <div class="card-metric-value" id="yc-current">—</div>
+        <div class="card-metric-sub">g/L (AFDW)</div>
+      </div>
+      <div class="card card-metric">
+        <div class="card-metric-label">AI-Optimized Yield</div>
+        <div class="card-metric-value" id="yc-optimized">—</div>
+        <div class="card-metric-sub">g/L (AFDW)</div>
+      </div>
+      <div class="card card-metric">
+        <div class="card-metric-label">Potential Improvement</div>
+        <div class="card-metric-value" id="yc-improve">—%</div>
+        <div class="card-metric-sub">Through optimization</div>
+      </div>
+    </section>
+
+    <section class="chart-container" style="margin-top:20px;">
+      <h3 style="margin-bottom:8px;">Yield Comparison Chart</h3>
+      <canvas id="yc-chart" height="150"></canvas>
+    </section>
+
+    <section class="card-soft" style="margin-top:20px;">
+      <h3>How AI Optimization Works</h3>
+      <ol style="color:var(--text-muted)">
+        <li>Data analysis of historical cultivation records.</li>
+        <li>Predict biomass & lipid output given current sensor values.</li>
+        <li>Recommend parameter adjustments to increase yield (pH, temp, nutrients).</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/comparison.js"></script>
+  <script>loadShell();</script>
+</body>
+</html>
