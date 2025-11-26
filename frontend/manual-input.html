@@ -1,78 +1,396 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Manual Input – AlgaeFuel AI</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Manual Data Input & Prediction — AlgaeFuel AI</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #f4fbf6;
+      --card: #ffffff;
+      --muted: #6b8a73;
+      --accent: #1f7a3a;
+      --brand-dark: #176230;
+      --accent-2: #2f9b48;
+      --panel: #eaf7ec;
+      --shadow: 0 6px 18px rgba(22,48,28,0.06);
+      --radius: 14px;
+      --radius-pill: 999px;
+      --transition-fast: 150ms cubic-bezier(.2,.9,.2,1);
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color-scheme: light;
+    }
+
+    /* ---------- NAVBAR (user CSS added) ---------- */
+    .nav-shell {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: rgba(255,255,255,0.55);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 6px 20px rgba(12,81,40,0.03);
+    }
+
+    .nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: radial-gradient(circle at 30% 20%, #4fe183, var(--brand-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 0 2px 6px rgba(8,40,18,0.18);
+    }
+
+    .nav-title {
+      font-weight: 700;
+      color: var(--brand-dark);
+      margin-left: 6px;
+      font-size: 1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 4px;
+      border-radius: 999px;
+      box-shadow: 0 8px 20px rgba(12, 81, 40, 0.12);
+    }
+
+    .nav-link {
+      border-radius: var(--radius-pill);
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition-fast);
+    }
+
+    .nav-link:hover {
+      background: #e4f6ea;
+      color: var(--brand-dark);
+    }
+
+    .nav-link.active {
+      background: var(--brand-dark);
+      color: #ffffff;
+    }
+
+    .nav-link span.icon {
+      font-size: 1.1rem;
+    }
+
+    /* ---------- PAGE LAYOUT ---------- */
+    html,body{height:100%; margin:0; background: linear-gradient(180deg, #f7fbf8 0%, var(--bg) 100%); color:#08321a;}
+    .page { max-width:1200px; margin:18px auto 40px; padding:16px; }
+
+    .layout { display:grid; grid-template-columns: 1fr 420px; gap:22px; align-items:start; }
+
+    .left-col .title { font-size:28px; font-weight:700; margin-bottom:6px; color:#0b3d1d; }
+    .subtitle { color:var(--muted); margin-bottom:18px; font-size:14px; }
+
+    .card { background: var(--card); border-radius: var(--radius); padding:18px; box-shadow: var(--shadow); margin-bottom:18px; }
+
+    .two-col { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    .param-card { background:linear-gradient(180deg,#fff,#f7fff7); border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:8px; }
+    .param-card label { font-weight:600; font-size:13px; color:#134b2a; }
+    .param-card input { border:1px solid #e6f1ea; padding:10px; border-radius:10px; outline:none; font-size:14px; background:#fbfff8; }
+
+    .advanced-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top:12px; }
+    .adv-card { padding:10px; border-radius:10px; background:#ffffff; box-shadow:0 4px 8px rgba(12,40,15,0.03); }
+
+    .button-row { display:flex; gap:12px; margin-top:16px; align-items:center; justify-content:flex-end; }
+    .btn { background:var(--accent); color:#fff; border:none; padding:10px 18px; border-radius:10px; cursor:pointer; font-weight:700; box-shadow: 0 6px 14px rgba(47,155,72,0.12); }
+    .btn.secondary { background:transparent; border:1px solid #e2efe4; color:var(--accent-2); font-weight:600; }
+
+    .mini-chart { height:120px; border-radius:8px; background:linear-gradient(180deg,#fbfff8, #f3fbf1); display:flex; align-items:center; justify-content:center; color:#9fbf9c; font-weight:600; }
+
+    .pred-card { background: linear-gradient(180deg,#f7fbf8, #ecf7ee); padding:20px; border-radius:var(--radius); box-shadow:var(--shadow); height:100%; display:flex; flex-direction:column; gap:16px; }
+    .pred-value { font-size:44px; font-weight:800; color:var(--accent-2); }
+    .cvstable { width:100%; border-collapse:collapse; margin-top:8px; font-size:13px; }
+    .cvstable td { padding:8px 6px; border-bottom:1px solid rgba(12,40,15,0.04); }
+    .cvstable .label { color:#4d6f58; font-weight:600; }
+
+    .site-footer { margin-top:18px; text-align:center; color:var(--muted); font-size:13px; padding:12px 0; }
+
+    @media (max-width:980px){
+      .layout{ grid-template-columns: 1fr; }
+      .right-col { order: 2; }
+      .nav { padding:12px; }
+    }
+
+    /* small helper */
+    .muted { color:var(--muted); font-size:13px; }
+  </style>
 </head>
 <body>
-  <div id="navbar"></div>
 
-  <main class="page">
-    <h1 class="section-title">Manual Data Input &amp; Prediction</h1>
-    <p class="section-subtitle">
-      Enter sensor values to get AI-powered biomass predictions.
-    </p>
-
-    <section class="grid-2">
-      <div class="card">
-        <h3 style="margin-bottom:12px;">Sensor Parameters</h3>
-
-        <form id="manualForm" class="form-grid">
-          <div class="form-group">
-            <label>pH Level</label>
-            <input type="number" step="0.01" id="phInput" placeholder="7.5" value="7.8" />
-          </div>
-          <div class="form-group">
-            <label>Temperature (°C)</label>
-            <input type="number" step="0.1" id="tempInput" placeholder="27" value="25" />
-          </div>
-          <div class="form-group">
-            <label>Turbidity (NTU)</label>
-            <input type="number" step="0.1" id="turbInput" placeholder="40" value="18" />
-          </div>
-          <div class="form-group">
-            <label>&nbsp;</label>
-            <button type="submit" class="btn-primary">Generate Prediction</button>
-          </div>
-        </form>
-
-        <div style="margin-top:18px;">
-          <h4 style="margin-bottom:8px;">Historical sample (last 8 readings)</h4>
-          <canvas id="manualTrend" height="120"></canvas>
+  <!-- NAVBAR: use the user's CSS classes; update links as your app uses -->
+  <div class="nav-shell">
+    <nav class="nav" role="navigation" aria-label="main navigation">
+      <div class="nav-left">
+        <div class="nav-logo" aria-hidden="true">AF</div>
+        <div>
+          <div class="nav-title">AlgaeFuel AI</div>
+          <div class="muted" style="font-size:12px; margin-top:2px;">AI Biofuel Optimization</div>
         </div>
       </div>
 
-      <div class="card card-metric">
-        <div class="card-metric-label">Predicted Biomass Yield</div>
-        <div class="card-metric-value" id="manual-biomass">0.387</div>
-        <div class="card-metric-sub"> g/L (AFDW)</div>
+      <div class="nav-links" role="menubar" aria-label="primary links">
+        <a class="nav-link" href="index.html"><span class="icon">🏠</span> Home</a>
+        <a class="nav-link" href="dashboard.html"><span class="icon">📊</span> Dashboard</a>
+        <a class="nav-link active" href="manual_input.html"><span class="icon">✍️</span> Manual Input</a>
+        <a class="nav-link" href="algae-types.html"><span class="icon">🧫</span> Algae Types</a>
+        <a class="nav-link" href="industry-usage.html"><span class="icon">🏭</span> Industry</a>
+      </div>
+    </nav>
+  </div>
 
-        <div style="margin-top:16px;">
-          <div style="font-weight:600;margin-bottom:6px;">Optimization Suggestions</div>
-          <ul id="manual-suggestions" style="font-size:0.95rem;color:var(--text-muted);"></ul>
-        </div>
+  <div class="page">
+    <div class="layout">
 
-        <div style="margin-top:16px;">
-          <div style="font-weight:600;margin-bottom:6px;">Current vs Optimal</div>
-          <table class="table-soft">
-            <thead>
-              <tr><th>Parameter</th><th>Current</th><th>Optimal</th></tr>
-            </thead>
-            <tbody id="current-optimal">
-              <!-- filled by JS -->
+      <!-- LEFT COLUMN: combined parameters card -->
+      <div class="left-col">
+        <div class="title">Manual Data Input & Prediction</div>
+        <div class="subtitle">Enter sensor & environment values — generate AI-powered biomass predictions.</div>
+
+        <div class="card" aria-labelledby="input-parameters-title">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div id="input-parameters-title" style="font-weight:700;">Input Parameters</div>
+            <div class="muted">Primary & advanced (optional)</div>
+          </div>
+
+          <!-- primary (2x2) -->
+          <div class="two-col">
+            <div class="param-card">
+              <label for="input-ph">pH</label>
+              <input id="input-ph" type="number" step="0.1" min="3" max="11" value="7.8" />
+              <div style="font-size:12px; color:var(--muted)">Range: 5.0 – 10.0</div>
+            </div>
+
+            <div class="param-card">
+              <label for="input-temp">Temperature (°C)</label>
+              <input id="input-temp" type="number" step="0.1" min="0" max="50" value="25" />
+              <div style="font-size:12px; color:var(--muted)">Range: 10 – 40 °C</div>
+            </div>
+
+            <div class="param-card">
+              <label for="input-turb">Turbidity (NTU)</label>
+              <input id="input-turb" type="number" step="0.1" min="0" value="18" />
+              <div style="font-size:12px; color:var(--muted)">Optical NTU reading</div>
+            </div>
+
+            <div class="param-card">
+              <label for="input-do">Dissolved Oxygen (mg/L)</label>
+              <input id="input-do" type="number" step="0.1" min="0" value="8.5" />
+              <div style="font-size:12px; color:var(--muted)">Dissolved oxygen</div>
+            </div>
+          </div>
+
+          <!-- advanced parameters inside the same card -->
+          <div style="margin-top:14px; font-weight:700;">Advanced Parameters (optional)</div>
+          <div class="advanced-grid">
+            <div class="adv-card">
+              <label for="input-cond" style="font-weight:700; font-size:13px; color:#1f7a3a;">Conductivity (µS/cm)</label>
+              <input id="input-cond" type="number" value="50000" style="width:100%; margin-top:8px; padding:8px; border-radius:8px; border:1px solid #e9f3ea; background:#fbfff8;">
+            </div>
+            <div class="adv-card">
+              <label for="input-sal" style="font-weight:700; font-size:13px; color:#1f7a3a;">Salinity (g/L)</label>
+              <input id="input-sal" type="number" value="30" style="width:100%; margin-top:8px; padding:8px; border-radius:8px; border:1px solid #e9f3ea; background:#fbfff8;">
+            </div>
+            <div class="adv-card">
+              <label for="input-light" style="font-weight:700; font-size:13px; color:#1f7a3a;">Light Energy (W/m²)</label>
+              <input id="input-light" type="number" value="300" style="width:100%; margin-top:8px; padding:8px; border-radius:8px; border:1px solid #e9f3ea; background:#fbfff8;">
+            </div>
+
+            <div class="adv-card">
+              <label for="input-airtemp" style="font-weight:700; font-size:13px; color:#1f7a3a;">Air Temperature (°C)</label>
+              <input id="input-airtemp" type="number" value="27" style="width:100%; margin-top:8px; padding:8px; border-radius:8px; border:1px solid #e9f3ea; background:#fbfff8;">
+            </div>
+            <div class="adv-card">
+              <label for="input-depth" style="font-weight:700; font-size:13px; color:#1f7a3a;">Depth (cm)</label>
+              <input id="input-depth" type="number" value="25" style="width:100%; margin-top:8px; padding:8px; border-radius:8px; border:1px solid #e9f3ea; background:#fbfff8;">
+            </div>
+            <div style="visibility:hidden"></div>
+          </div>
+
+          <!-- bottom row: history + action buttons -->
+          <div style="display:flex; gap:14px; margin-top:14px; align-items:flex-start;">
+            
+            <div style="width:220px; display:flex; flex-direction:column; justify-content:flex-end; gap:8px;">
+              <div style="font-size:13px; color:var(--muted);">Controls</div>
+              <div class="button-row" style="justify-content:flex-end;">
+                <button id="btn-reset" class="btn secondary">Reset</button>
+                <button id="btn-predict" class="btn">Generate Prediction</button>
+              </div>
+            </div>
+          </div>
+        </div> <!-- end combined card -->
+      </div> <!-- end left-col -->
+
+      <!-- RIGHT COLUMN: prediction panel -->
+      <div class="right-col">
+        <div class="pred-card card" role="region" aria-label="prediction panel">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div style="font-weight:700; font-size:16px;">Predicted Biomass Yield</div>
+              <div style="color:var(--muted); font-size:13px;">AI-generated estimation</div>
+            </div>
+            <div style="margin-top:12px;">
+              <div class="pred-value" id="pred-value">-</div>
+              <div style="color:var(--muted); font-size:13px;">g/L (AFDW)</div>
+            </div>
+          </div>
+
+          <div style="background:#ffffff; border-radius:10px; padding:12px; box-shadow:0 6px 14px rgba(12,40,15,0.03);">
+            <div style="font-weight:700; margin-bottom:8px;">Optimization Suggestions</div>
+            <div id="suggestions" class="muted">No suggestion yet — generate a prediction.</div>
+          </div>
+
+          <div style="font-weight:700; font-size:14px; margin-top:6px;">Current vs Optimal Values</div>
+          <table class="cvstable" role="table" aria-label="current vs optimal">
+            <tbody>
+              <tr><td class="label">pH</td><td id="cur-ph">-</td><td id="opt-ph" style="text-align:right">-</td></tr>
+              <tr><td class="label">Temperature</td><td id="cur-temp">-</td><td id="opt-temp" style="text-align:right">-</td></tr>
+              <tr><td class="label">Dissolved O₂</td><td id="cur-do">-</td><td id="opt-do" style="text-align:right">-</td></tr>
+              <tr><td class="label">Light Energy</td><td id="cur-light">-</td><td id="opt-light" style="text-align:right">-</td></tr>
             </tbody>
           </table>
+
+          <div style="margin-top:auto; display:flex; justify-content:flex-end;">
+            <div class="muted">Last updated: <span id="last-upd">—</span></div>
+          </div>
         </div>
       </div>
-    </section>
-  </main>
 
-  <div id="footer"></div>
+    </div> <!-- layout -->
 
-  <script src="assets/js/api.js"></script>
-  <script src="assets/js/manual.js"></script>
-  <script>loadShell();</script>
+    <!-- FOOTER: use same look-and-feel as site -->
+    <footer class="site-footer" role="contentinfo">
+      <div style="max-width:1200px; margin:0 auto; padding:12px 18px;">
+        <div style="display:flex; justify-content:space-between; gap:12px; align-items:center; flex-wrap:wrap;">
+          <div class="muted">© 2025 AlgaeFuel AI · Prototype</div>
+          <div class="muted">Made for demo • <a href="privacy.html">Privacy</a></div>
+        </div>
+      </div>
+    </footer>
+
+  </div> <!-- page -->
+
+  <script>
+    // Inputs (IDs match backend contract)
+    const inputs = {
+      ph: document.getElementById('input-ph'),
+      temp: document.getElementById('input-temp'),
+      turb: document.getElementById('input-turb'),
+      do: document.getElementById('input-do'),
+      cond: document.getElementById('input-cond'),
+      sal: document.getElementById('input-sal'),
+      light: document.getElementById('input-light'),
+      airtemp: document.getElementById('input-airtemp'),
+      depth: document.getElementById('input-depth')
+    };
+
+    const predValueEl = document.getElementById('pred-value');
+    const suggestionsEl = document.getElementById('suggestions');
+    const lastUpdEl = document.getElementById('last-upd');
+
+    const cur = { ph: document.getElementById('cur-ph'), temp: document.getElementById('cur-temp'), do: document.getElementById('cur-do'), light: document.getElementById('cur-light') };
+    const opt = { ph: document.getElementById('opt-ph'), temp: document.getElementById('opt-temp'), do: document.getElementById('opt-do'), light: document.getElementById('opt-light') };
+
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      inputs.ph.value = 7.8; inputs.temp.value = 25; inputs.turb.value = 18; inputs.do.value = 8.5;
+      inputs.cond.value = 50000; inputs.sal.value = 30; inputs.light.value = 300; inputs.airtemp.value = 27; inputs.depth.value = 25;
+      predValueEl.textContent = '-'; suggestionsEl.textContent = 'No suggestion yet — generate a prediction.'; lastUpdEl.textContent = '—';
+      cur.ph.textContent = '-'; cur.temp.textContent = '-'; cur.do.textContent = '-'; cur.light.textContent = '-';
+      opt.ph.textContent = '-'; opt.temp.textContent = '-'; opt.do.textContent = '-'; opt.light.textContent = '-';
+      document.getElementById('mini-chart').textContent = 'No history yet';
+    });
+
+    // Demo prediction function (local heuristic) — replace with real backend fetch('/predict')
+    async function predictRequest(payload){
+      // demo heuristic
+      const temp = payload.temperature, ph = payload.pH, turb = payload.turbidity, doVal = payload.dissolved_oxygen;
+      const base = 0.01 * Math.max(0, temp) * Math.max(0, 8 - Math.abs(ph - 7));
+      const turbFactor = Math.max(0.12, 1 - turb / 120);
+      const doFactor = Math.max(0.7, Math.min(1.2, 1 + (doVal - 8) * 0.03));
+      const prediction = +(base * turbFactor * doFactor).toFixed(4);
+      const suggestions = [];
+      const optimal = { pH: 7.8, temp: 27, dissolved_oxygen: 9.5, light_energy: 300 };
+      if (ph < 7.5) suggestions.push("Increase pH slightly.");
+      else if (ph > 8.2) suggestions.push("Decrease pH slightly.");
+      if (temp < 24) suggestions.push("Raise temperature to 26–28°C.");
+      if (turb > 40) suggestions.push("High turbidity — check contamination.");
+      return { prediction, suggestions: suggestions.length ? suggestions.join(' ') : "All parameters within expected ranges.", optimal };
+    }
+
+    document.getElementById('btn-predict').addEventListener('click', async () => {
+      const payload = {
+        pH: parseFloat(inputs.ph.value || 0),
+        temperature: parseFloat(inputs.temp.value || 0),
+        turbidity: parseFloat(inputs.turb.value || 0),
+        dissolved_oxygen: parseFloat(inputs.do.value || 0),
+        conductivity: parseFloat(inputs.cond.value || 0),
+        salinity: parseFloat(inputs.sal.value || 0),
+        light_energy: parseFloat(inputs.light.value || 0),
+        air_temperature: parseFloat(inputs.airtemp.value || 0),
+        depth_cm: parseFloat(inputs.depth.value || 0)
+      };
+
+      // small history placeholder
+      const mini = document.getElementById('mini-chart');
+      mini.textContent = 'Recent: ' + (predValueEl.textContent === '-' ? '-' : predValueEl.textContent) + ' (live)';
+
+      try {
+        // If you have backend, replace predictRequest call with fetch to your /predict endpoint.
+        const res = await predictRequest(payload);
+
+        predValueEl.textContent = (res.prediction ?? 0).toFixed(4);
+        suggestionsEl.textContent = res.suggestions ?? '—';
+        lastUpdEl.textContent = new Date().toLocaleTimeString();
+
+        cur.ph.textContent = payload.pH.toFixed(2);
+        cur.temp.textContent = payload.temperature.toFixed(1);
+        cur.do.textContent = payload.dissolved_oxygen.toFixed(2);
+        cur.light.textContent = payload.light_energy ? payload.light_energy.toFixed(0) : '-';
+
+        if (res.optimal) {
+          opt.ph.textContent = (res.optimal.pH ?? '-');
+          opt.temp.textContent = (res.optimal.temp ?? '-');
+          opt.do.textContent = (res.optimal.dissolved_oxygen ?? '-');
+          opt.light.textContent = (res.optimal.light_energy ?? '-');
+        }
+      } catch (err) {
+        suggestionsEl.textContent = 'Prediction failed — check backend or network.';
+        console.error(err);
+      }
+    });
+  </script>
 </body>
 </html>
